@@ -15,6 +15,5 @@ export const databaseProviders = [
          ],
          synchronize: true,
       }),
-      autoLoadEntities: true,
    },
 ];

@@ -2,7 +2,7 @@ import { createConnection } from 'typeorm';
 
 export const databaseProviders = [
    {
-      provide: 'DATABASE_CONNECTION',
+      provide: 'AUTH_DATABASE_PROVIDE',
       useFactory: async () => await createConnection({
          type: 'postgres',
          host: 'localhost',

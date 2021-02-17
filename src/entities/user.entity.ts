@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 
 @Entity({ schema: "auth" })
 export class User {
-   @PrimaryGeneratedColumn()
+   @PrimaryGeneratedColumn({ type: 'bigint' })
    id: number;
 
    @Column('text')
@@ -14,7 +14,7 @@ export class User {
    @Column('text')
    password: string;
 
-   @Column('bigint')
+   @Column({ type: 'bigint' })
    matrix_id: number;
 
    @Column({ type: 'boolean', default: false })

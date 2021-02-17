@@ -1,0 +1,21 @@
+{
+   "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/node_modules": true,
+      "node_modules": true,
+      "**/.vscode": true,
+      ".vscode": true,
+      "**/package-lock.json": true,
+      "package-lock.json": true,
+      "**/test": true,
+      "test": true,
+      "src\\controllers/app.controller.spec.ts": true,
+      "**/app.controller.spec.ts": true,
+      "app.controller.spec.ts": true
+   },
+   "explorerExclude.backup": null
+}

@@ -1,0 +1,77 @@
+### Route not found
+GET http://127.0.0.1/user
+
+### All     
+GET http://127.0.0.1/users
+
+### page  1
+GET http://127.0.0.1/users?limit=4&page=6
+
+### Found
+GET http://127.0.0.1/users/2
+
+### Not Found
+GET http://127.0.0.1/users/16
+
+### POST Completo
+POST http://127.0.0.1/users
+content-type: application/json
+
+{
+    "name": "Luis Nt",
+    "login": "luisnt@gmail.com",
+    "password": "0d86197c423ba486739a8d8a58ad67ec7c087cbf54a2154284a127ad7b3e39d5",
+    "matrix_id": 2,
+    "is_matrix": 0,
+    "reset_password": 0,
+    "active": 1
+}
+
+### POST Validado falha
+POST http://127.0.0.1/users
+content-type: application/json
+
+{
+    "name": "Luis Nt",
+    "active": "1"
+}
+
+
+### UPDATE Not Found
+PUT http://127.0.0.1/users/9
+content-type: application/json
+
+{
+    "name": "Luis Nt",
+    "login": "luisnt@gmail.com",
+    "password": "0d86197c423ba486739a8d8a58ad67ec7c087cbf54a2154284a127ad7b3e39d5",
+    "matrix_id": 2,
+    "is_matrix": 0,
+    "reset_password": 0,
+    "active": 1
+}
+
+### UPDATE Validado falha
+PUT http://127.0.0.1/users/10
+content-type: application/json
+
+{
+    "name": "Luis Nt"
+}
+
+### UPDATE Not Found
+PUT http://127.0.0.1/users/7
+content-type: application/json
+
+{
+    "name": "Luis Nt",
+    "login": "luisnt@gmail.com",
+    "password": "0d86197c423ba486739a8d8a58ad67ec7c087cbf54a2154284a127ad7b3e39d5",
+    "matrix_id": 2,
+    "is_matrix": 0,
+    "reset_password": 0,
+    "active": 1
+}
+
+### DELETE
+DELETE http://127.0.0.1/users/7

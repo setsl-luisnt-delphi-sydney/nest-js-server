@@ -1,8 +1,9 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpCode, Req, Res } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserDto } from 'src/dto/user.dto';
+import { PaginationDto } from 'src/dto/pagination.dto';
+import { PaginatedDto } from 'src/dto/paginated.dto';
 
 @Injectable()
 export class UserService {
@@ -11,23 +12,40 @@ export class UserService {
       private userRepository: Repository<User>,
    ) { }
 
-   index(): Promise<User[]> {
-      return this.userRepository.find();
+   async index(paginationDto: PaginationDto): Promise<PaginatedDto<User>> {
+
+      const dataDto = new PaginatedDto<User>()
+      dataDto.url = paginationDto.getUrl()
+      dataDto.setPage(paginationDto.page)
+      dataDto.setLimit(paginationDto.limit)
+      dataDto.records = await this.userRepository.count()
+      dataDto.data = await this.userRepository.createQueryBuilder()
+         .offset(dataDto.getOffset())
+         .limit(dataDto.limit)
+         .getMany()
+      return dataDto
    }
 
-   show(id: string): Promise<User> {
-      return this.userRepository.findOne(+id)
+   async show(id: number): Promise<User> {
+      const data = await this.userRepository.findOneOrFail(id)
+      data.id = +data.id
+      return data
    }
 
-   create(createUserDto: CreateUserDto) {
-      return this.userRepository.create({ ...createUserDto })
+   async story(userDto: UserDto): Promise<User> {
+      const data = await this.userRepository.save(userDto)
+      data.id = +data.id
+      return { id: data.id, ...data }
    }
 
-   update(id: number, updateUserDto: UpdateUserDto) {
-      return this.userRepository.update(id, { ...updateUserDto })
+   async update(id: number, userDto: UserDto): Promise<User> {
+      await this.show(id)
+      const data = await this.userRepository.update(id, userDto)
+      return this.show(id)
    }
 
-   remove(id: number) {
-      return this.userRepository.delete(id)
+   async delete(id: number): Promise<void> {
+      await this.show(id)
+      const data = await this.userRepository.delete(id)
    }
 }

@@ -9,11 +9,8 @@ import { UserModule } from './user.module';
   imports: [UserModule],
   controllers: [AppController],
   providers: [
-    {
-      provide: APP_FILTER,
-      useClass: AllExceptionsFilter,
-    },
+    { provide: APP_FILTER, useClass: AllExceptionsFilter, },
     AppService,
   ],
 })
-export class AppModule {}
+export class AppModule { }

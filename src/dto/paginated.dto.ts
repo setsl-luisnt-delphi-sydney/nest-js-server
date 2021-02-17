@@ -1,7 +1,7 @@
 import { PaginationDto, Page, Pages } from "./pagination.dto"
 
-export class PaginatedDto<Data> {
-   public data: Data[]
+export class PaginatedDto {
+   private data: any[]
    private url: string
    private page: Page
    private pages: Pages
@@ -20,10 +20,10 @@ export class PaginatedDto<Data> {
       this.pages.prior = ''
       this.pages.next = ''
 
-      this.calcOffset()
+      this.adapter()
    }
 
-   private calcOffset(): void {
+   private adapter(): void {
       const url = this.url
       let page = this.page.value || 1
       let limit = this.page.limit || 10
@@ -31,9 +31,9 @@ export class PaginatedDto<Data> {
       if (+limit > 10) { limit = 10; this.page.limit = limit }
       let pages = Math.ceil(+records / +limit)
       this.pages.count = pages
+      if (page > pages) { page = pages; this.page.value = pages }
       let rows = (page === pages) ? records % limit : limit
       this.page.rows = rows
-      if (page > pages) { page = pages; this.page.value = pages }
       const offset = (+page - 1) * +limit
       this.page.offset = offset
       const prior = (page > 1) ? (page - 1) : null
@@ -50,11 +50,12 @@ export class PaginatedDto<Data> {
       }
    }
 
-   getOffset(): number { return this.page.offset || 0 }
-   getLimit(): number { return this.page.limit || 10 }
+   get offset(): number { return this.page.offset || 0 }
+   get limit(): number { return this.page.limit || 10 }
 
-   response() {
+   response(data: any) {
       delete this.page.offset
+      this.data = data
       return this
    }
 }

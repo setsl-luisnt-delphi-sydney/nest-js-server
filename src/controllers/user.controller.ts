@@ -12,7 +12,7 @@ export class UserController {
    constructor(private readonly userService: UserService) { }
 
    @Get()
-   async index(@Req() req, @Query() paginationDto: PaginationDto): Promise<PaginatedDto<User>> {
+   async index(@Req() req, @Query() paginationDto: PaginationDto): Promise<PaginatedDto> {
       paginationDto.url = req.url.split('?')[0]
       const data = await this.userService.index(paginationDto)
       return data

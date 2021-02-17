@@ -11,10 +11,10 @@ GET http://127.0.0.1/users?page=1
 GET http://127.0.0.1/users?page=2
 
 ### page 3
-GET http://127.0.0.1/users?page=3&pageLimit=5
+GET http://127.0.0.1/users?page=3&limit=5
 
-### page 3 limit > 10
-GET http://127.0.0.1/users?page=3&pageLimit=100
+### page 4 limit > 10
+GET http://127.0.0.1/users?page=3&limit=100
 
 ### page 5 max 3, limit > 10
 GET http://127.0.0.1/users?page=5&limit=100

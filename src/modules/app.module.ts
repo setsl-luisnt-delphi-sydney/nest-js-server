@@ -6,15 +6,14 @@ import { AppService } from '../services/app.service';
 import { UserModule } from './user.module';
 
 @Module({
-  imports:
-    [
-      UserModule
-    ],
+  imports: [UserModule],
   controllers: [AppController],
   providers: [
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
-    }, AppService],
+    },
+    AppService,
+  ],
 })
-export class AppModule { }
+export class AppModule {}

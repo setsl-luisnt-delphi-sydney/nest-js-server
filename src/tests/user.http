@@ -11,13 +11,19 @@ GET http://127.0.0.1/users?page=1
 GET http://127.0.0.1/users?page=2
 
 ### page 3
-GET http://127.0.0.1/users?page=3&limit=5
+GET http://127.0.0.1/users?page=3
 
-### page 4 limit > 10
-GET http://127.0.0.1/users?page=3&limit=100
+### page 4
+GET http://127.0.0.1/users?page=4
 
 ### page 5 max 3, limit > 10
 GET http://127.0.0.1/users?page=5&limit=100
+
+### page 3 limit 5
+GET http://127.0.0.1/users?page=3&limit=5
+
+### page 6 limit 5
+GET http://127.0.0.1/users?page=6&limit=5
 
 ### Found
 GET http://127.0.0.1/users/2

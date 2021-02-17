@@ -1,0 +1,10 @@
+
+### Route public
+GET http://127.0.0.1/
+
+### Route public
+GET http://127.0.0.1/api
+
+
+### Route public
+GET http://127.0.0.1/favicon.ico

@@ -21,7 +21,7 @@ export class UserService {
          .offset(offset).limit(limit)
          .getMany()
 
-      return dataDto
+      return dataDto.response()
    }
 
    async show(id: number): Promise<User> {

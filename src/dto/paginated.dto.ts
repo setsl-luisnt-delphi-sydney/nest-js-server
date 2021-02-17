@@ -1,55 +1,60 @@
-import { PaginationDto } from "./pagination.dto"
+import { PaginationDto, Page, Pages } from "./pagination.dto"
 
 export class PaginatedDto<Data> {
-   public pageLimit: number
-   public offset: number
-
    public data: Data[]
-   public url: string
-   public page: number
-   public rows: number
-   public pages: number
-   public records: number
-   public priorPage: any
-   public nextPage: any
+   private url: string
+   private page: Page
+   private pages: Pages
 
    constructor(paginationDto: PaginationDto, records: number) {
       this.url = paginationDto.url
-      this.records = +records || 0
-      this.pageLimit = +paginationDto.pageLimit || 10
-      this.page = +paginationDto.page || 1
-      this.rows = 0
-      this.pages = 0
-      this.priorPage = ''
-      this.nextPage = ''
+      this.page = new Page()
+      this.page.value = parseInt(paginationDto.page) || 1
+      this.page.limit = parseInt(paginationDto.limit) || 10
+      this.page.rows = 0
+      this.page.offset = 0
+
+      this.pages = new Pages()
+      this.pages.count = 0
+      this.pages.rows = +records || 0
+      this.pages.prior = ''
+      this.pages.next = ''
+
       this.calcOffset()
    }
 
    private calcOffset(): void {
       const url = this.url
-      let page = +this.page
-      let limit = +this.pageLimit
-      let records = +this.records
-      if (limit > 10) { limit = 10; this.pageLimit = limit }
-      this.pages = Math.ceil(records / limit)
-      this.rows = records % limit
-      if (page > this.pages) { page = this.pages; this.page = page }
-      const priorPage = (page > 1) ? (page - 1) : null
-      const nextPage = (page >= this.pages) ? null : (page + 1)
-      if (nextPage !== null) {
-         this.nextPage = `${url}?page=${page + 1}&limit=${limit}`
-      } else {
-         delete this.nextPage
-      }
-      if (priorPage !== null) {
-         this.priorPage = `${url}?page=${page - 1}&limit=${limit}`
-      } else {
-         delete this.priorPage
-      }
+      let page = this.page.value || 1
+      let limit = this.page.limit || 10
+      let records = this.pages.rows
+      if (+limit > 10) { limit = 10; this.page.limit = limit }
+      let pages = Math.ceil(+records / +limit)
+      this.pages.count = pages
+      let rows = (page === pages) ? records % limit : limit
+      this.page.rows = rows
+      if (page > pages) { page = pages; this.page.value = pages }
       const offset = (+page - 1) * +limit
-      this.offset = offset
+      this.page.offset = offset
+      const prior = (page > 1) ? (page - 1) : null
+      const next = (page >= pages) ? null : (page + 1)
+      if (next !== null) {
+         this.pages.next = `${url}?page=${page + 1}&limit=${limit}`
+      } else {
+         delete this.pages.next
+      }
+      if (prior !== null) {
+         this.pages.prior = `${url}?page=${page - 1}&limit=${limit}`
+      } else {
+         delete this.pages.prior
+      }
    }
 
-   getOffset(): number { return this.offset || 0 }
-   getLimit(): number { return this.pageLimit || 10 }
+   getOffset(): number { return this.page.offset || 0 }
+   getLimit(): number { return this.page.limit || 10 }
+
+   response() {
+      delete this.page.offset
+      return this
+   }
 }

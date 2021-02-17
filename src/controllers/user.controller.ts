@@ -13,8 +13,7 @@ export class UserController {
 
    @Get()
    async index(@Req() req, @Query() paginationDto: PaginationDto): Promise<PaginatedDto<User>> {
-      const url = req.url.split('?')[0]
-      paginationDto.url = url
+      paginationDto.url = req.url.split('?')[0]
       const data = await this.userService.index(paginationDto)
       return data
    }

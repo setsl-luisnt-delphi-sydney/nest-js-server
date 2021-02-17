@@ -13,18 +13,14 @@ export class UserService {
    ) { }
 
    async index(paginationDto: PaginationDto): Promise<PaginatedDto<User>> {
-      const dataDto = new PaginatedDto<User>()
-      dataDto.url = paginationDto.url
-      dataDto.setPage(+paginationDto.page)
-      dataDto.setLimit(+paginationDto.limit)
-      dataDto.records = await this.userRepository.count()
-      const offset = await dataDto.calcOffset()
+      const dataDto = new PaginatedDto<User>(paginationDto, await this.userRepository.count())
+      const offset = await dataDto.getOffset()
       const limit = await dataDto.getLimit()
-      dataDto.data = await this.userRepository
-         .createQueryBuilder()
-         .offset(offset)
-         .limit(limit)
+
+      dataDto.data = await this.userRepository.createQueryBuilder()
+         .offset(offset).limit(limit)
          .getMany()
+
       return dataDto
    }
 

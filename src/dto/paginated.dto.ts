@@ -1,35 +1,41 @@
+import { PaginationDto } from "./pagination.dto"
+
 export class PaginatedDto<Data> {
+   public pageLimit: number
+   public offset: number
+
    public data: Data[]
    public url: string
    public page: number
+   public rows: number
    public pages: number
-   public limit: number
    public records: number
    public priorPage: any
    public nextPage: any
 
-   getData(): Data[] { return this.data || [] }
-   setData(value: Data[]) { this.data = value || [] }
+   constructor(paginationDto: PaginationDto, records: number) {
+      this.url = paginationDto.url
+      this.records = +records || 0
+      this.pageLimit = +paginationDto.pageLimit || 10
+      this.page = +paginationDto.page || 1
+      this.rows = 0
+      this.pages = 0
+      this.priorPage = ''
+      this.nextPage = ''
+      this.calcOffset()
+   }
 
-   getPage(): number { return this.page || 1 }
-   setPage(value: number) { this.page = +value || 1 }
-
-   getLimit(): number { return this.limit || 10 }
-   setLimit(value: number) { this.limit = +value || 10 }
-
-   calcOffset(): number {
+   private calcOffset(): void {
       const url = this.url
-      let page = +this.getPage()
-      let limit = +this.getLimit()
+      let page = +this.page
+      let limit = +this.pageLimit
       let records = +this.records
-      if (limit > 10) { limit = 10; this.setLimit(limit) }
-      const countPage = Math.trunc((records / limit))
-      const countRestPage = (records % limit)
-      const lastPage = countPage + (countRestPage !== 0 ? 1 : 0)
-      this.pages = lastPage
-      if (page > lastPage) { page = lastPage; this.page = page }
+      if (limit > 10) { limit = 10; this.pageLimit = limit }
+      this.pages = Math.ceil(records / limit)
+      this.rows = records % limit
+      if (page > this.pages) { page = this.pages; this.page = page }
       const priorPage = (page > 1) ? (page - 1) : null
-      const nextPage = (page >= lastPage) ? null : (page + 1)
+      const nextPage = (page >= this.pages) ? null : (page + 1)
       if (nextPage !== null) {
          this.nextPage = `${url}?page=${page + 1}&limit=${limit}`
       } else {
@@ -41,11 +47,9 @@ export class PaginatedDto<Data> {
          delete this.priorPage
       }
       const offset = (+page - 1) * +limit
-      return offset
+      this.offset = offset
    }
 
-   getRecords(): number { return this.records || 0 }
-   setRecords(value: number) { this.records = +value || 0 }
-
-
+   getOffset(): number { return this.offset || 0 }
+   getLimit(): number { return this.pageLimit || 10 }
 }

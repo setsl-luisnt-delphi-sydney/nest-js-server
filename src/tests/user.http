@@ -4,8 +4,20 @@ GET http://127.0.0.1/user
 ### All     
 GET http://127.0.0.1/users
 
-### page  1
-GET http://127.0.0.1/users?limit=4&page=6
+### page 1
+GET http://127.0.0.1/users?page=1
+
+### page 2
+GET http://127.0.0.1/users?page=2
+
+### page 3
+GET http://127.0.0.1/users?page=3
+
+### page 3 limit > 10
+GET http://127.0.0.1/users?page=3&limit=100
+
+### page 5 max 3, limit > 10
+GET http://127.0.0.1/users?page=5&limit=100
 
 ### Found
 GET http://127.0.0.1/users/2

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, Res, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
@@ -12,7 +12,9 @@ export class UserController {
    constructor(private readonly userService: UserService) { }
 
    @Get()
-   async index(@Query() paginationDto: PaginationDto): Promise<PaginatedDto<User>> {
+   async index(@Req() req, @Query() paginationDto: PaginationDto): Promise<PaginatedDto<User>> {
+      const url = req.url.split('?')[0]
+      paginationDto.url = url
       const data = await this.userService.index(paginationDto)
       return data
    }

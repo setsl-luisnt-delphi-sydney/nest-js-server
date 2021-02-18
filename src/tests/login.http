@@ -1,0 +1,42 @@
+@ip = 127.0.0.1
+@port = 80
+@host = http://{{ip}}:{{port}}
+@contentType = application/json
+
+### Route public
+GET {{host}}
+### Route public
+GET {{host}}/api
+### Route public
+GET {{host}}/favicon.ico
+
+
+### Sem Login           -> 400 Bad Request - Authorization Not Found
+POST {{host}}/api/login HTTP/1.1
+Content-Type: application/json
+
+### Login IsEmpty       -> 400 Bad Request - Authorization Is Empty
+POST http://127.0.0.1/api/login HTTP/1.1
+Content-Type: application/json
+Authorization: 
+
+### Login Inválido      -> 400 Bad Request - Authorization Invalid
+POST http://127.0.0.1/api/login HTTP/1.1
+Content-Type: application/json
+Authorization: teste
+
+### Login Acesso negado -> 412 Precondition Failed - Field Not Found
+POST http://127.0.0.1/api/login HTTP/1.1
+Content-Type: application/json
+Authorization: Basic lAcjpwYXNdXN
+
+### Login Acesso negado -> 401 UNAUTHORIZED
+POST http://127.0.0.1/api/login HTTP/1.1
+Content-Type: application/json
+Authorization: Basic dXNlcjpwYXNzd2Q=
+
+### Login Retorna Token -> 201 CREATED
+POST http://127.0.0.1/api/login HTTP/1.1
+Content-Type: application/json
+Authorization: Basic bHVpc250QGdtYWlsLmNvbTo3dWprbA==
+

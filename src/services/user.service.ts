@@ -9,7 +9,7 @@ export class UserService {
   constructor(
     @Inject('USER_REPOSITORY')
     private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async index(pagination: Pagination): Promise<DataDto> {
     const dataDto = new DataDto(pagination, await this.userRepository.count());

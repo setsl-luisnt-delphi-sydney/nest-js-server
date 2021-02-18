@@ -37,7 +37,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
           ? `Acesso negado a rota ${req.url} usando o método ${req.method}.`
           : exception.response.message + '. ' + exception.response.error;
       data['message'] = message;
-      res.status(404).json({ ...data });
+      res.status(404).json({ ...data })
     }
 
     if (this.isBadRequest(exception)) {

@@ -1,19 +1,4 @@
-import {
-  BadRequestException,
-  Body,
-  ClassSerializerInterceptor,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  Param,
-  Post,
-  Put,
-  Query,
-  Req,
-  UseInterceptors,
-  ValidationPipe,
-} from '@nestjs/common';
+import { BadRequestException, Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
@@ -23,7 +8,7 @@ import { DataDto, Pagination } from 'src/dto/pagination.dto';
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('api/users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get()
   async index(

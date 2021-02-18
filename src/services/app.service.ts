@@ -13,4 +13,6 @@ export class AppService {
   getFavicon(): any {
     return '';
   }
+
+
 }
